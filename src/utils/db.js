@@ -1,55 +1,53 @@
-const DIARIES_KEY = 'moprint_diaries';
-const GROUPS_KEY = 'moprint_groups';
+import { supabase } from '../lib/supabaseClient';
 
 /**
- * 로컬 스토리지에서 전체 일기 목록을 가져옵니다.
- * @returns {Array} 일기 객체 리스트
+ * Supabase DB에서 전체 일기 목록을 가져옵니다. (최신순)
+ * @returns {Promise<Array>} 일기 객체 리스트
  */
-export const loadDiaries = () => {
-  try {
-    const rawData = localStorage.getItem(DIARIES_KEY);
-    return rawData ? JSON.parse(rawData) : [];
-  } catch (error) {
+export const loadDiaries = async () => {
+  const { data, error } = await supabase
+    .from('diaries')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
     console.error('일기를 불러오는 도중 에러가 발생했습니다:', error);
     return [];
   }
+  return data;
 };
 
 /**
- * 로컬 스토리지에 전체 일기 목록을 저장합니다.
- * @param {Array} diaries - 저장할 일기 목록
+ * Supabase DB에 새 일기를 저장합니다.
+ * @param {Object} diary - 저장할 일기 객체
+ * @returns {Promise<Object|null>} 저장된 일기 객체
  */
-export const saveDiaries = (diaries) => {
-  try {
-    localStorage.setItem(DIARIES_KEY, JSON.stringify(diaries));
-  } catch (error) {
+export const addDiary = async (diary) => {
+  const { data, error } = await supabase
+    .from('diaries')
+    .insert([diary])
+    .select()
+    .single();
+
+  if (error) {
     console.error('일기를 저장하는 도중 에러가 발생했습니다:', error);
-    throw new Error('용량 초과 등의 이유로 일기를 저장할 수 없습니다.', { cause: error });
+    throw new Error('일기를 저장할 수 없습니다.', { cause: error });
   }
+  return data;
 };
 
 /**
- * 로컬 스토리지에서 전체 그룹 목록을 가져옵니다.
- * @returns {Array} 그룹 이름 리스트
+ * Supabase DB에서 특정 일기를 삭제합니다.
+ * @param {string} id - 삭제할 일기의 UUID
  */
-export const loadGroups = () => {
-  try {
-    const rawData = localStorage.getItem(GROUPS_KEY);
-    return rawData ? JSON.parse(rawData) : []; // 기본은 빈 배열 (깨끗한 빈 상태 시작)
-  } catch (error) {
-    console.error('그룹 목록을 불러오는 도중 에러가 발생했습니다:', error);
-    return [];
-  }
-};
+export const deleteDiary = async (id) => {
+  const { error } = await supabase
+    .from('diaries')
+    .delete()
+    .eq('id', id);
 
-/**
- * 로컬 스토리지에 전체 그룹 목록을 저장합니다.
- * @param {Array} groups - 저장할 그룹 이름 목록
- */
-export const saveGroups = (groups) => {
-  try {
-    localStorage.setItem(GROUPS_KEY, JSON.stringify(groups));
-  } catch (error) {
-    console.error('그룹 목록을 저장하는 도중 에러가 발생했습니다:', error);
+  if (error) {
+    console.error('일기를 삭제하는 도중 에러가 발생했습니다:', error);
+    throw new Error('일기를 삭제할 수 없습니다.', { cause: error });
   }
 };

@@ -20,12 +20,19 @@
 
 ---
 
-## Phase 2: Supabase DB + Storage 마이그레이션 (예정)
+## Phase 2: Supabase DB + Storage 마이그레이션 (완료)
 
 ### 목표
 - 기존 LocalStorage → Supabase PostgreSQL DB로 완전 교체
 - 이미지 저장 방식: base64 → Supabase Storage URL 방식으로 전환
 - `user_id` 컬럼 설계 포함 (실제 Auth 기능은 다음 단계)
+
+### 구현 내용
+- **데이터 저장**: `diaries` 테이블 기반 Supabase CRUD로 전환
+- **이미지 저장**: Canvas 압축 후 Supabase Storage `diary-images` 버킷 업로드, 공개 URL을 `image_url`로 저장
+- **환경 변수**: `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`를 로컬 `.env` 및 Vercel 환경 변수로 관리
+- **보안 정책**: Phase 2 익명 CRUD를 위한 `diaries` RLS policy 및 Storage upload/read policy 문서화
+- **검증**: 로컬 Supabase 연동 확인, Vercel 환경 변수 등록 후 재배포, 빌드 및 린트 통과
 
 ### 주요 변경 파일
 | 파일 | 변경 내용 |
@@ -35,3 +42,6 @@
 | `src/utils/imageCompressor.js` | base64 → Storage 업로드 & URL 반환 |
 | `src/App.jsx` | 동기 → 비동기 데이터 로드 |
 | `src/components/DiaryForm.jsx` | Storage 업로드 방식으로 전환 |
+| `src/components/DiaryFeed.jsx` | `image_url` 기반 이미지 표시 |
+| `src/components/DiaryDetailModal.jsx` | `image_url` 기반 상세 이미지 표시 |
+| `docs/supabase_schema.sql` | DB schema, RLS policy, Storage policy 문서화 |

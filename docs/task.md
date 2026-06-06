@@ -12,7 +12,7 @@
 
 ---
 
-## Phase 2 (진행 중) 🔄
+## Phase 2 (완료) ✅
 
 ### 사전 준비
 - [x] Supabase 프로젝트 생성 및 `.env` 파일 설정
@@ -22,22 +22,23 @@
 - [x] 문서 업데이트 및 커밋
 
 ### 패키지 설치
-- [ ] `@supabase/supabase-js` 설치
+- [x] `@supabase/supabase-js` 설치
 
 ### Supabase 설정
-- [ ] `diaries` 테이블 생성 (Supabase SQL Editor에서 실행)
-- [ ] `src/lib/supabaseClient.js` Supabase 클라이언트 초기화 파일 생성
+- [x] `diaries` 테이블 생성 SQL 문서화 (`docs/supabase_schema.sql`)
+- [x] `src/lib/supabaseClient.js` Supabase 클라이언트 초기화 파일 생성
 
 ### 유틸리티 마이그레이션
-- [ ] `src/utils/db.js` → Supabase DB CRUD로 교체
-- [ ] `src/utils/imageCompressor.js` → Supabase Storage 업로드로 교체
+- [x] `src/utils/db.js` → Supabase DB CRUD로 교체
+- [x] `src/utils/imageCompressor.js` → Supabase Storage 업로드로 교체
 
 ### 컴포넌트 수정
-- [ ] `src/App.jsx` → 비동기 데이터 로드로 전환
-- [ ] `src/components/DiaryForm.jsx` → Storage 업로드 방식으로 전환
+- [x] `src/App.jsx` → 비동기 데이터 로드로 전환
+- [x] `src/components/DiaryForm.jsx` → Storage 업로드 방식으로 전환
+- [x] `src/components/DiaryFeed.jsx` / `DiaryDetailModal.jsx` → `image_url` 표시로 전환
 
 ### 검증 및 배포
-- [ ] 로컬 환경에서 Supabase 연동 동작 확인
-- [ ] Vercel 환경 변수 등록 후 재배포
-- [ ] 빌드 및 린트 통과 확인
-- [ ] 문서 업데이트 및 커밋/푸시
+- [x] 로컬 환경에서 Supabase 연동 동작 확인
+- [x] Vercel 환경 변수 등록 후 재배포
+- [x] 빌드 및 린트 통과 확인
+- [x] 문서 업데이트 및 커밋/푸시

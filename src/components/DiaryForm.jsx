@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { compressImage } from '../utils/imageCompressor';
+import { uploadImage } from '../utils/imageCompressor';
 
 // 기분 별 파스텔 색상 정의
 const COLOR_OPTIONS = [
@@ -14,24 +14,23 @@ export default function DiaryForm({ onAddDiary, onCancel }) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [date, setDate] = useState(new Date().toISOString().substring(0, 10));
-  const [image, setImage] = useState(null);
-  const [compressing, setCompressing] = useState(false);
+  const [imageUrl, setImageUrl] = useState(null);
+  const [uploading, setUploading] = useState(false);
   const [selectedColor, setSelectedColor] = useState('pink');
 
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    setCompressing(true);
+    setUploading(true);
     try {
-      // HTML Canvas 기반 리사이징 및 압축 실행
-      const compressedDataUrl = await compressImage(file, 800, 800, 0.7);
-      setImage(compressedDataUrl);
+      const uploadedUrl = await uploadImage(file, 800, 800, 0.7);
+      setImageUrl(uploadedUrl);
     } catch (error) {
-      alert('이미지 압축에 실패했습니다. 다시 시도해 주세요.');
+      alert('이미지 업로드에 실패했습니다. 다시 시도해 주세요.');
       console.error(error);
     } finally {
-      setCompressing(false);
+      setUploading(false);
     }
   };
 
@@ -46,7 +45,7 @@ export default function DiaryForm({ onAddDiary, onCancel }) {
       title: title.trim(),
       content: content.trim(),
       date,
-      image,
+      image_url: imageUrl,
       color: selectedColor,
       visibility: 'private', // 1단계는 나만 보기 고정
     });
@@ -54,7 +53,7 @@ export default function DiaryForm({ onAddDiary, onCancel }) {
     // 폼 초기화
     setTitle('');
     setContent('');
-    setImage(null);
+    setImageUrl(null);
     setSelectedColor('pink');
   };
 
@@ -139,7 +138,7 @@ export default function DiaryForm({ onAddDiary, onCancel }) {
               <label htmlFor="file-upload" className="file-upload-trigger">
                 <span className="file-upload-icon">📷</span>
                 <span className="file-upload-text">
-                  {compressing ? '이미지 압축 중...' : '기기에서 사진 불러오기'}
+                  {uploading ? '이미지 업로드 중...' : '기기에서 사진 불러오기'}
                 </span>
               </label>
             </div>
@@ -153,8 +152,8 @@ export default function DiaryForm({ onAddDiary, onCancel }) {
                 }}
               >
                 <div className="polaroid-image-container">
-                  {image ? (
-                    <img src={image} alt="Preview" className="preview-polaroid-img" />
+                  {imageUrl ? (
+                    <img src={imageUrl} alt="Preview" className="preview-polaroid-img" />
                   ) : (
                     <span className="polaroid-placeholder">🖼️</span>
                   )}
@@ -190,7 +189,7 @@ export default function DiaryForm({ onAddDiary, onCancel }) {
           <button type="button" className="button-secondary" onClick={onCancel}>
             작성 취소
           </button>
-          <button type="submit" className="button-primary" disabled={compressing}>
+          <button type="submit" className="button-primary" disabled={uploading}>
             📄 순간 인쇄하기
           </button>
         </div>

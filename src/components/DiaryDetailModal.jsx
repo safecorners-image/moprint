@@ -20,9 +20,9 @@ export default function DiaryDetailModal({ diary, onClose }) {
         <div className="modal-body">
           <div className="modal-photo-section">
             <div className="modal-polaroid" style={{ backgroundColor: cardColor }}>
-              {diary.image ? (
+              {diary.image_url ? (
                 <img
-                  src={diary.image}
+                  src={diary.image_url}
                   alt={diary.title}
                   className="modal-polaroid-image"
                 />

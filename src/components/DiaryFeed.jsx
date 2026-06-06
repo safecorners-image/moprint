@@ -62,9 +62,9 @@ export default function DiaryFeed({ diaries, onDeleteDiary, onSelectDiary }) {
                   style={{ cursor: 'pointer' }}
                 >
                   <div className="polaroid-image-container">
-                    {diary.image ? (
+                    {diary.image_url ? (
                       <img
-                        src={diary.image}
+                        src={diary.image_url}
                         alt={diary.title}
                         className="polaroid-image"
                         loading="lazy"

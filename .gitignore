@@ -14,6 +14,7 @@ lerna-debug.log*
 
 # FNM binary directory
 .bin/
+.fnm-state/
 
 # Dependency directories
 node_modules/
