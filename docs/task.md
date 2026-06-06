@@ -1,20 +1,43 @@
-# MoPrint (Momentary + Print) - Phase 1: Private Core Features
+# MoPrint (Momentary + Print) - 2단계: Supabase 마이그레이션
 
-- [x] 프로젝트 환경 설정
-  - [x] Vite + React 프로젝트 초기화
-  - [x] 패키지 설치 (`npm install`)
-  - [x] 필요 없는 기본 파일(assets, css 등) 정리
-- [x] 디자인 시스템 연동 및 기본 레이아웃 구성
-  - [x] `src/index.css`에 디자인 토큰(CSS 변수) 정의 (크림 배경, 파스텔 톤 카드, 둥글기 등)
-  - [x] 구글 폰트(Quicksand & Gowun Dodum) 연동 (`index.html`)
-  - [x] 메인 대시보드 프레임 및 네비게이션 구조 개발 (`src/App.jsx`)
-- [x] 데이터 엔진 및 유틸리티 구현
-  - [x] LocalStorage 일기 저장/로드 유틸리티 설계 (`src/utils/db.js`)
-  - [x] HTML Canvas 기반 이미지 압축 및 Base64 변환 유틸리티 구현 (`src/utils/imageCompressor.js`)
-- [x] 컴포넌트 개발
-  - [x] 일기 작성 폼 컴포넌트 (`src/components/DiaryForm.jsx`)
-  - [x] 폴라로이드 스타일 일기 카드 및 타임라인 피드 컴포넌트 (`src/components/DiaryFeed.jsx`)
-  - [x] 일기 디테일 모달/뷰어 구현
-- [x] 검증 및 최종 조율
-  - [x] 빌드 테스트 (`npm run build`)
-  - [x] 이미지 업로드 용량 제한 대응 테스트 및 모바일 반응형 레이아웃 확인
+## Phase 1 (완료) ✅
+- [x] 프로젝트 환경 설정 (Vite + React)
+- [x] 디자인 시스템 연동 (크림 배경, 파스텔 톤, 폴라로이드 카드)
+- [x] 구글 폰트(Quicksand & Gowun Dodum) 연동
+- [x] LocalStorage 기반 일기 CRUD 구현
+- [x] HTML Canvas 이미지 압축 (base64)
+- [x] DiaryForm / DiaryFeed / DiaryDetailModal 컴포넌트 개발
+- [x] 빌드 및 린트 검증
+- [x] GitHub 업로드 (safecorners-image/moprint)
+
+---
+
+## Phase 2 (진행 중) 🔄
+
+### 사전 준비
+- [x] Supabase 프로젝트 생성 및 `.env` 파일 설정
+- [x] Supabase Storage `diary-images` 버킷 생성
+- [x] `.gitignore`에 `.env` 추가
+- [x] `.env.example` 템플릿 파일 생성
+- [x] 문서 업데이트 및 커밋
+
+### 패키지 설치
+- [ ] `@supabase/supabase-js` 설치
+
+### Supabase 설정
+- [ ] `diaries` 테이블 생성 (Supabase SQL Editor에서 실행)
+- [ ] `src/lib/supabaseClient.js` Supabase 클라이언트 초기화 파일 생성
+
+### 유틸리티 마이그레이션
+- [ ] `src/utils/db.js` → Supabase DB CRUD로 교체
+- [ ] `src/utils/imageCompressor.js` → Supabase Storage 업로드로 교체
+
+### 컴포넌트 수정
+- [ ] `src/App.jsx` → 비동기 데이터 로드로 전환
+- [ ] `src/components/DiaryForm.jsx` → Storage 업로드 방식으로 전환
+
+### 검증 및 배포
+- [ ] 로컬 환경에서 Supabase 연동 동작 확인
+- [ ] Vercel 환경 변수 등록 후 재배포
+- [ ] 빌드 및 린트 통과 확인
+- [ ] 문서 업데이트 및 커밋/푸시
